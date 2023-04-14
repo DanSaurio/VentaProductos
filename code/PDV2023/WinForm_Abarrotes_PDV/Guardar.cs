@@ -1,4 +1,5 @@
 using Middle_Abarrotes_PDV;
+using pruebaVENTA;
 
 namespace WinForm_Abarrotes_PDV
 {
@@ -11,6 +12,7 @@ namespace WinForm_Abarrotes_PDV
         {
             InitializeComponent();
         }
+
 
         private void btnGuardar_Click(object sender, EventArgs e)
         {
@@ -72,6 +74,16 @@ namespace WinForm_Abarrotes_PDV
             {
                 MessageBox.Show("Producto registrado correctamewnte");
             }
+        }
+
+        private void btnCancelarGuardar_Click(object sender, EventArgs e)
+        {
+            txtCodBarras.Clear();
+            txtNom.Clear();
+            txtImagen.Clear();
+            txtMarca.Clear();
+            txtPrecio.Clear();
+            
         }
     }
 }

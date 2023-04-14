@@ -224,6 +224,7 @@
             btnCancelarGuardar.TabIndex = 31;
             btnCancelarGuardar.Text = "Cancelar";
             btnCancelarGuardar.UseVisualStyleBackColor = false;
+            btnCancelarGuardar.Click += btnCancelarGuardar_Click;
             // 
             // Guardar
             // 

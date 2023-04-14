@@ -22,32 +22,61 @@ namespace pruebaVENTA
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Presentacion valorPresentacion;
-            //convertir de string a PResentacion
+
+            Presentacion valorpresentacion;
             switch (comboPresentacion.SelectedItem.ToString())
             {
                 case "CAJA":
-                    valorPresentacion = Presentacion.CAJA; break;
-                case "LITRO":
-                    valorPresentacion = Presentacion.LITRO; break;
+                    valorpresentacion = Presentacion.CAJA;
+                    break;
                 case "KILO":
-                    valorPresentacion = Presentacion.KILO; break;
+                    valorpresentacion = Presentacion.KILO;
+                    break;
+                case "LITRO":
+                    valorpresentacion = Presentacion.LITRO;
+                    break;
                 case "PIEZA":
-                    valorPresentacion = Presentacion.PIEZA; break;
+                    valorpresentacion = Presentacion.PIEZA;
+                    break;
                 default:
-                    valorPresentacion = Presentacion.KILO; break;
-
+                    valorpresentacion = Presentacion.KILO;
+                    break;
 
             }
-
-            bool resultado = prod.modificar(txtNom.Text, txtDesc.Text, double.Parse(txtPrecio.Text), txtCodBarras.Text, txtImagen.Text, txtMarca.Text, valorPresentacion);
+            bool resultado = prod.modificarProd(txtNom.Text, txtDesc.Text, double.Parse(txtPrecio.Text), txtCodBarras.Text, txtImagen.Text, txtMarca.Text, valorpresentacion);
+            //valir el res
             if (resultado == false)
+                Producto.msgError = "Error al Modificar";
+
+        }
+
+        private void buttonBuscar_Click(object sender, EventArgs e)
+        {
+            List<Producto> prods = prod.consultarGeneral($" nombre LIKE '%{textBoxbuscar.Text}%' OR descripcion LIKE '%{textBoxbuscar.Text}%'");
+            if (prods.Count > 0)
             {
-                MessageBox.Show("ERROR AL MODIFICAR " + Producto.msgError);
+                dataGridProductos.Rows.Clear();
+                foreach (Producto pro in prods)
+                {
+                    dataGridProductos.Rows.Add(new object[] { pro.id, pro.nombre, pro.cod_barras, pro.descripcion, pro.precio, pro.imagen, });
+
+                }
             }
-            else
+        }
+
+        private void label8_Click(object sender, EventArgs e)
+        {
+        }
+
+        private void textBoxbuscar_TextChanged(object sender, EventArgs e)
+        {
+        }
+
+        private void textBoxbuscar_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (e.KeyChar == (char)(Keys.Enter))
             {
-                MessageBox.Show("Producto Modificado correctamewnte");
+                buttonBuscar_Click(sender, e);
             }
         }
     }

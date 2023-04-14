@@ -50,7 +50,7 @@ namespace Middle_Abarrotes_PDV
 		}//crear
 
 
-        public bool modificar(string nom, string desc, double precio, string cod_barras, string imagen, string marca, Presentacion unidad, int id)
+        public bool modificar(string nom, string desc, double precio, string cod_barras, string imagen, string marca, Presentacion unidad)
         {
             List<string> nombresCampos = new List<string>()
             {
@@ -157,8 +157,7 @@ namespace Middle_Abarrotes_PDV
 
             return prodResultado;
         }
-
-        public bool modificar(string text1, string text2, double v, string text3, string text4, string text5, Presentacion valorPresentacion)
+        public bool modificarProd(string text1, string text2, double v, string text3, string text4, string text5, Presentacion Valorpresentacion)
         {
             throw new NotImplementedException();
         }
@@ -166,6 +165,67 @@ namespace Middle_Abarrotes_PDV
         public bool borrar(string text1, string text2, double v, string text3, string text4, string text5, Presentacion valorPresentacion)
         {
             throw new NotImplementedException();
+        }
+
+        public List<Producto> consultarGeneral(string where)
+        {
+            List<Producto> listaDeProds = new List<Producto>();
+            Producto prodResultado = new Producto();
+
+            List<object[]> res = this.bd.consulta("productos", where);
+            //validamos que traig un elemento la lista
+            if (res.Count >= 1)
+            {
+
+
+                for (int i = 0; i < res.Count; i++)
+                {
+                    prodResultado = new Producto();
+                    Presentacion presentacionTexto;
+                    object[] tempo = res[0];
+                    prodResultado.id = int.Parse(tempo[0].ToString());
+                    prodResultado.nombre = tempo[1].ToString();
+                    prodResultado.cod_barras = tempo[2].ToString();
+                    prodResultado.descripcion = tempo[3].ToString();
+                    prodResultado.precio = double.Parse(tempo[4].ToString());
+                    prodResultado.imagen = tempo[5].ToString();
+                    prodResultado.marca = tempo[6].ToString();
+
+
+                    switch (tempo[7].ToString())
+                    {
+                        case "CAJA":
+                            presentacionTexto = Presentacion.CAJA;
+                            break;
+                        case "KILO":
+                            presentacionTexto = Presentacion.KILO;
+                            break;
+                        case "LITRO":
+                            presentacionTexto = Presentacion.LITRO;
+                            break;
+                        case "PIEZA":
+                            presentacionTexto = Presentacion.PIEZA;
+                            break;
+                        default:
+                            presentacionTexto = Presentacion.KILO;
+                            break;
+
+                    }
+                    prodResultado.unidad = presentacionTexto;
+                }
+
+                listaDeProds.Add(prodResultado);
+
+            }
+            else
+            {
+                Producto.msgError = "Código de barras no existe en catalogo de productos. " + this.bd.msgError;
+                prodResultado = null;
+            }
+
+            return listaDeProds;
+
+       
         }
     }
 }
